@@ -66,7 +66,7 @@ sed -i "1s/^/chr\tpos\tdepth\n/" depth/"${depth_strain}"_"${ref}"_gc_corrected_d
 samtools mpileup -q 60 -f "${fasta}" "${snp_bam}" | awk '{print $1, $2, $3, $4, $5}' > alleles/"${snp_strain}".pileup
 
 # use a borrowed python script to parse mpileup into neat columns of A, T, G, C
-python3 /home/selmecki/shared/software/berman_count_snps_v5.py alleles/"${snp_strain}".pileup > alleles/"${snp_strain}"_"${ref}"_putative_SNPs.txt
+python3 /home/selmecki/shared/scripts/ymap_dup/berman_count_snps_v5.py alleles/"${snp_strain}".pileup > alleles/"${snp_strain}"_"${ref}"_putative_SNPs.txt
 
 # add standard header
 sed -i "1s/^/chr\tpos\tref\tA\tT\tG\tC\n/" alleles/"${snp_strain}"_"${ref}"_putative_SNPs.txt
