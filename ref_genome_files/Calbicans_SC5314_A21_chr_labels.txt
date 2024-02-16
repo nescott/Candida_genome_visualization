@@ -1,0 +1,8 @@
+"Chr1"
+"Chr2"
+"Chr3"
+"Chr4"
+"Chr5"
+"Chr6"
+"Chr7"
+"ChrR"
