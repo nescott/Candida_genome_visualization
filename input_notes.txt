@@ -1,3 +1,0 @@
-To quickly generate a list of bam files for processing, including relative paths:
-
-`find path/to/bams -name "*.bam" | sort > my_sorted_bams.txt`
