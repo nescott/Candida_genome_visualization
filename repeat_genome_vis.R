@@ -22,14 +22,14 @@
 args = commandArgs(trailingOnly = TRUE)
 
 # Input file variables
-genome_df_file <-  args[1]
+genome_df_file <- args[1]
 sample_id <- args[2] # or "YourID"
 feature_file <- args[3] # or "path/to/features.txt"
 label_file <- args[4] # or "path/to/chr_labels.txt"
 
 ## ---------------------------
 # Load packages
-library(readxl) 
+library(readxl)
 library(tidyverse)
 library(ggplot2)
 
@@ -41,7 +41,7 @@ ploidy <- 2
 y_axis_labels <- c(1,2,3,4)  # manual y-axis labels, adjust as needed
 inter_chr_spacing <- 150000 # size of space between chrs
 
-save_dir <- paste0("images/Calbicans/",Sys.Date(),"_genome_plots/") # path with trailing slash, or  "" to save locally 
+save_dir <- "images/Calbicans/" # path with trailing slash, or  "" to save locally
 ref <- "sc5314" # short label for file name or "" to leave out
 
 # Plotting variables
@@ -51,11 +51,11 @@ chr_ids <- scan(label_file, what = character())
 snp_low <- "white"  # snp LOH colors, plot function uses 2-color gradient scale
 snp_high <- "black"  # snp LOH colors, plot function uses 2-color gradient scale
 cnv_color <- "dodgerblue4"  # copy number color
-    
+
 ploidy_multiplier <- 2  # this multiplied by ploidy sets the max-y scale
 
 chrom_outline_color <- "gray15"  # color of chromosome outlines
-    
+
 chrom_line_width <- 0.2  # line width of chromosome outlines
 
 ## ---------------------------
@@ -70,11 +70,11 @@ chroms <- genome_depth %>%
 
 features <- read_tsv(feature_file, show_col_types = FALSE)
 
-features <- features %>% 
-     group_by(chr, index=consecutive_id(chr)) %>% 
-     left_join(chroms, by=join_by(index)) 
- 
-features <- features %>% 
+features <- features %>%
+     group_by(chr, index=consecutive_id(chr)) %>%
+     left_join(chroms, by=join_by(index))
+
+features <- features %>%
      mutate(plot_start = start + xmin, plot_end = end + xmin)
 
 # Tick marks to center chromosome ID label
@@ -86,11 +86,11 @@ ticks <- tapply(genome_depth$plot_pos, genome_depth$index, quantile, probs =
 p <- ggplot(genome_depth) +
   scale_color_gradient(low=snp_low,high=snp_high, na.value = "white", guide = "none") +
   geom_segment(aes(x = plot_pos, y = 0, color = snp_count, xend = plot_pos, yend = Inf)) +
-  geom_segment(aes(x = plot_pos, 
+  geom_segment(aes(x = plot_pos,
                    y = ifelse(copy_number <= ploidy*ploidy_multiplier, copy_number, Inf),
                    xend = plot_pos, yend = ploidy), alpha = 0.9, color = cnv_color) +
   geom_rect(data=chroms, aes(group=index, xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax),
-            linewidth = chrom_line_width, fill = NA, 
+            linewidth = chrom_line_width, fill = NA,
             colour = chrom_outline_color, linejoin = "round", inherit.aes = FALSE) +
   geom_point(data = features, size = 2,
                aes(group=index, x=plot_start, y=ymin, shape = Feature, fill = Feature),
