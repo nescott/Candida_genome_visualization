@@ -9,8 +9,6 @@
 ##
 ## Email: scot0854@umn.edu
 ## ---------------------------
-#!/usr/bin/env Rscript
-#args = commandArgs(trailingOnly = TRUE)
 
 # Input vars
 spreadsheet_list <- "~/umn/data/metadata/Calbicans_snp-depth_paths.txt"
