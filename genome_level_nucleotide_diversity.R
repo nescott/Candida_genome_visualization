@@ -1,12 +1,6 @@
 ## ---------------------------
-## Script name: pi_genome-wide.R
-##
-## Purpose: Plot calculated nucleotide diversity across chrs
-##
+## Purpose: Plot vcftools nucleotide diversity across chrs
 ## Author: Nancy Scott
-##
-## Date Created: 2024-02-21
-##
 ## Email: scot0854@umn.edu
 ## ---------------------------
 library(tidyverse)

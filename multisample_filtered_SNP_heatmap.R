@@ -1,42 +1,33 @@
 ## ---------------------------
-## Purpose
-##
+## Purpose: Generate a heatmap of all SNPs for a group of isolates, across all chromosomes
 ## Author: Nancy Scott
-##
 ## Email: scot0854@umn.edu
 ## ---------------------------
-## ---------------------------
 # Input files
+
 genotype_table <-"align_variants_SC5314_A21_ref/clustering/Calbicans_MEC_bwa_genotypes.txt"
 sample_list <- "~/umn/data/metadata/Calbicans_MEC_raxml_midpoint_tips.csv"
-
 feature_file <- "path/to/features.txt"
 label_file <- "~/umn/Candida_genome_visualization/ref_genome_files/Calbicans_SC5314_A21_chr_labels.txt"
 
-save_dir <- "~/umn/images/Calbicans/"
-
-mito <- "Ca19-mtDNA"
-
-## ---------------------------
 # Load packages
 library(tidyverse)
 library(ggplot2)
 library(writexl)
 library(readxl)
 
-## ---------------------------
-# Input variables
+# Set variables
 window <- 5000 # size of window used for rolling mean and snp density
-sample_order <- read_csv(sample_list, show_col_types = FALSE)
 
-save_dir <- "" # path with trailing slash or "" to save locally
+save_dir <- "~/umn/images/Calbicans/"
+
 ref <- "sc5314" # label for file name or "" to leave out
 
-# Plotting variables
-# For overwriting scaffold names in final plot
-chr_ids <- scan(label_file, what = character())
+mito <- "Ca19-mtDNA"
 
-# SNP LOH colors, plot function uses 2-color gradient scale
+sample_order <- read_csv(sample_list, show_col_types = FALSE)
+
+# SNP colors, plot function uses 2-color gradient scale
 snp_low <- "white"
 snp_high <- "dodgerblue3"
 
@@ -46,6 +37,10 @@ chrom_outline_color <- "gray26"
 # Line width of chromosome outlines
 chrom_line_width <- 0.2
 
+# For overwriting scaffold names in final plot
+chr_ids <- scan(label_file, what = character())
+
+# Read in genotypes (generated from filtered VCF)
 genotypes <- read.table(genotype_table,
                         header = TRUE,
                         sep="\t")
@@ -60,15 +55,17 @@ snp_counts <- gt %>%
 
 snp_counts$x_num <- seq.int(nrow(snp_counts))
 
-snp_again <- snp_counts %>%
-  pivot_longer(names_to = "sample", values_to = "snp_count", cols=-c(CHROM,snp_bin, x_num))
-
 chrs <- snp_counts %>%
   group_by(CHROM) %>%
   summarise(border_start=min(x_num),
             border_stop=max(x_num),
             tick=min(x_num) + (max(x_num)-min(x_num))/2)
 
+snp_again <- snp_counts %>%
+  pivot_longer(names_to = "sample", values_to = "snp_count", cols=-c(CHROM,snp_bin, x_num))
+
+################################################################################
+# Plot heatmap
 p <- snp_again %>%
   mutate(clustered_samples = fct_relevel(sample, rev(sample_order$sample))) %>%
   ggplot(aes(x=x_num, y=clustered_samples, fill=snp_count))+

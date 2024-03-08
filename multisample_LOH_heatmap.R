@@ -1,12 +1,6 @@
 ## ---------------------------
-## Script name: LOH_heatmap.R
-##
-## Purpose: Combine het SNP counts and generate heatmap across chrs
-##
+## Purpose: Combine het SNP counts and generate heatmap across chrs for a group of isolates
 ## Author: Nancy Scott
-##
-## Date Created: 2024-02-15
-##
 ## Email: scot0854@umn.edu
 ## ---------------------------
 
@@ -15,7 +9,6 @@ spreadsheet_list <- "~/umn/data/metadata/Calbicans_snp-depth_paths.txt"
 sample_list <- "~/umn/data/metadata/Calbicans_MEC_raxml_midpoint_tips.csv"
 save_dir <- "~/umn/images/Calbicans/"
 
-## ---------------------------
 # Load packages
 library(readxl)
 library(tidyverse)
@@ -23,7 +16,6 @@ library(ggplot2)
 library(paletteer)
 library(writexl)
 
-## ---------------------------
 # Read in SNP counts for all samples
 snp_files <- scan(spreadsheet_list, what=character())
 
@@ -40,14 +32,14 @@ for(i in 2:100){
     left_join(new_snp, by = join_by(index,pos))
 }
 
-# Plotting: regular intervals for x-axis
+# For plotting: regular intervals for x-axis
 genome_snp$x_num <- seq.int(nrow(genome_snp))
 
 # Finish tidying data
 snp_again <- genome_snp %>%
   pivot_longer(names_to = "sample", values_to = "snp_count", cols=-c(index,pos, x_num))
 
-# Plotting: chr outlines and tick marks
+# For plotting: chr outlines and tick marks
 chrs <- genome_snp %>%
   group_by(index) %>%
   summarise(border_start=min(x_num),
@@ -58,6 +50,7 @@ chrs <- genome_snp %>%
 # Sort samples by tree order
 sample_order <- read_csv(sample_list, show_col_types = FALSE)
 
+################################################################################
 # Plot
 p <- snp_again %>%
   mutate(clustered_samples = fct_relevel(sample, rev(sample_order$sample))) %>%
@@ -80,7 +73,7 @@ p <- snp_again %>%
         legend.title = element_text(size=10)
         )
 
-# What are the axis positions per sample?
+# Troubleshooting: what are the axis positions per sample?
 #details <- ggplot_build(p)
 
 ggsave(paste0(save_dir,Sys.Date(),"_MEC_Calbicans_LOH_heatmap.png"), p, device=png, dpi=300, bg="white",

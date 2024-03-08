@@ -1,12 +1,6 @@
 ### ---------------------------
-## Script name: group_copy_number_vis.R
-##
-## Purpose of script: plot all relative copy number data for a group of samples
-##
+## Purpose: plot all relative copy number data for a group of samples on a single linear ideogram
 ## Author: Nancy Scott
-##
-## Date Created: 2024-02-19
-##
 ## Email: scot0854@umn.edu
 ## ---------------------------
 # Input file variables
@@ -15,28 +9,20 @@ feature_file <- "ref_genome_files/Calbicans_SC5314_A21_plotting_features.txt"
 label_file <-  "ref_genome_files/Calbicans_SC5314_A21_chr_labels.txt"
 patient_data <- "~/umn/data/metadata/2022_Calbicans_sorted_patient_pop.csv"
 
-## ---------------------------
 # Load packages
 library(readxl)
 library(tidyverse)
 library(ggplot2)
 library(paletteer)
 
-## ---------------------------
-# Set vars
+# Plotting variables
+save_dir <-"images/Calbicans/"
+
 ploidy <- 2
 
 y_axis_labels <- c(1,2,3,4,5,6)  # manual y-axis labels, adjust as needed
 inter_chr_spacing <- 150000 # size of space between chrs
-
-save_dir <- paste0("images/Calbicans/",Sys.Date(),"_combined_CN_plots/") # path with trailing slash, or  "" to save locally
-ref <- "sc5314" # short label for file name or "" to leave out
-
 patient_colors <- c(paletteer_d("colorBlindness::paletteMartin"))
-
-# Plotting variables
-# X-axis labels overwrite input scaffold names in final plot
-chr_ids <- scan(label_file, what = character())
 
 ploidy_multiplier <- 3  # this multiplied by ploidy sets the max-y scale
 
@@ -44,12 +30,16 @@ chrom_outline_color <- "gray15"  # color of chromosome outlines
 
 chrom_line_width <- 0.2  # line width of chromosome outlines
 
+################################################################################
+# X-axis labels overwrite input scaffold names in final plot
+chr_ids <- scan(label_file, what = character())
+
 # Read in patient metadata
 pop.data <- read.table(patient_data,
                        sep = ",",
                        header = TRUE)
 
-# Read in depth data for all isolates
+# Read in and combine depth data for all isolates
 depth_files <- scan(spreadsheet_list, what=character())
 
 genome_depth <- read_xlsx(depth_files[1]) %>%
@@ -76,7 +66,6 @@ genome_depth <- genome_depth%>%
   mutate(copy_number = ifelse(sample %in% c("MEC185", "MEC324"), copy_number +1, copy_number)) %>%
   arrange(ploidy_change)
 
-## ---------------------------
 # Small dataframes for chrom. outlines and features
 chroms <- genome_depth %>%
   group_by(index) %>%
@@ -95,7 +84,7 @@ features <- features %>%
 ticks <- tapply(genome_depth$plot_pos, genome_depth$index, quantile, probs =
                   0.5, na.remove = TRUE)
 
-## ---------------------------
+################################################################################
 # Plot linear genome
 p <- genome_depth %>%
   group_by(sample) %>%
@@ -124,7 +113,6 @@ p <- genome_depth %>%
         axis.text.x = element_text(size=12),
         legend.position = "bottom")
 
-## ---------------------------
 # Save plot
-ggsave("try1.png",
+ggsave(paste0(save_dir,Sys.Date(),"_MEC_Calbicans_all_copy_number.png"),
        p, width = 12, height = 2.7, units = "in", device = png, dpi = 300, bg = "white")

@@ -1,12 +1,6 @@
 ## ---------------------------
-## Script name: gene_cov.R
-##
 ## Purpose: Summarize deleted and truncated genes (determined by read depth)
-##
 ## Author: Nancy Scott
-##
-## Date Created: 2024-02-15
-##
 ## Email: scot0854@umn.edu
 ## ---------------------------
 # Input vars
@@ -14,7 +8,6 @@ truncation_file <- "~/umn/data/metadata/Calbicans_MEC_all_truncations.tab"
 deletion_file <- "~/umn/data/metadata/Calbicans_MEC_all_deletions.tab"
 include_file <- "~/Calbicans_persvade/scripts/Calbicans_genes_to_check_coverage.txt"
 
-## ---------------------------
 # Load packages
 library(readxl)
 library(tidyverse)
@@ -22,7 +15,6 @@ library(ggplot2)
 library(paletteer)
 library(writexl)
 
-## ---------------------------
 truncations <- read.delim(truncation_file)
 
 deletions <- read.delim(deletion_file)
