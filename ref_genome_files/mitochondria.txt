@@ -1,0 +1,11 @@
+Calbicans = Ca19-mtDNA
+Cdubliniensis NA
+Cglabrata = mito_C_glabrata_CBS138
+Ckefyr = NC_036023.1
+Ckrusei NA
+Clusitania = CM025806.1 (FDA-ARGOS genome) scaffold_9 (AMS5200 assembly)
+Cnivariensis = scaffold_16
+Corthopsilosis NA
+Cparapsilosis = mito_C_parapsilosis_CDC317
+Ctropicalis = NW_003020045.1 (MYA-3404, ASM633v3)
+Cutilis NA
