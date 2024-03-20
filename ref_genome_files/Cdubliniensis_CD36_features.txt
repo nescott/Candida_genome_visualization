@@ -1,3 +1,4 @@
+chr	Feature	start	end
 Chr1_C_dubliniensis_CD36	repeat_region	1713490	1729132
 Chr2_C_dubliniensis_CD36	repeat_region	2112004	2127236
 Chr2_C_dubliniensis_CD36	repeat_region	2180370	2201636
