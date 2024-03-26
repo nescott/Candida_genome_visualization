@@ -9,7 +9,7 @@ options(scipen = 999)
 spreadsheet_list <- "~/umn/data/metadata/Calbicans_snp-depth_paths.txt"
 sample_list <- "~/umn/data/metadata/Calbicans_MEC_raxml_midpoint_tips.csv"
 save_dir <- "~/umn/images/Calbicans/"
-genome_size <- 28605418
+genome_size <- 14324315
 
 # Load packages
 library(readxl)
@@ -46,7 +46,7 @@ h <- ggplot(snp_total, aes(x = het_percentage)) +
   xlab("Genome heterozygosity, %") +
   ylab("Count")
 
-ggsave("Calbicans_genome_heterozygosity_estimate.png",
+ggsave(paste0(save_dir,"Calbicans_genome_heterozygosity_estimate.png"),
        h,
        device = png,
        dpi = 300,
