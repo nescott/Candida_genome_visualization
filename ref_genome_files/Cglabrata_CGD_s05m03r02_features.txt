@@ -1,6 +1,7 @@
 chr	Feature	start	end
 ChrA_C_glabrata_CBS138	Centromere	91899	92008
 ChrB_C_glabrata_CBS138	Centromere	454134	454245
+ChrC_C_glabrata_CBS138	Repeat region	88535	153646
 ChrC_C_glabrata_CBS138	Centromere	455789	455898
 ChrD_C_glabrata_CBS138	Repeat region	500369	502123
 ChrD_C_glabrata_CBS138	Centromere	564262	564373
