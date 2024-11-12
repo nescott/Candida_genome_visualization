@@ -7,8 +7,8 @@
 #!/usr/bin/env Rscript
 args = commandArgs(trailingOnly = TRUE)
 
-snp_file <- "/home/selmecki/shared/2021_Calbicans_Erayil/align_variants_SC5314_A21_ref/genome_plots/alleles/MEC005_sc5314_putative_SNPs.txt"
-summary_file <- "~/umn/data/genome_plots/Calbicans/2023-11-29_MEC005.xlsx"
+snp_file <- ""
+summary_file <- ""
 
 # Load packages
 library(tidyverse)
